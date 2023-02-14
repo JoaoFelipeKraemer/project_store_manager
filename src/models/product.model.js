@@ -10,19 +10,17 @@ const findById = async (id) => {
   return product;
 };
 
-// const insert = (person) => conn.execute( // post
-
-//     `INSERT INTO people 
-
-//       (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)`,
-
-//     [person.firstName, person.lastName, person.email, person.phone],
-
-//   );
+const insertProduct = async (name) => {
+    const [{ insertId }] = await conn.execute(
+    'INSERT INTO StoreManager.products (name) VALUE (?);',
+    [...Object.values(name)],
+    );
+      return insertId;
+};
 
 module.exports = {
   findAll,
   findById,  
-  // insert,
+  insertProduct,
 
 };

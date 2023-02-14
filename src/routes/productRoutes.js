@@ -3,13 +3,11 @@ const { productControler } = require('../controllers');
 
 const router = express.Router();
 
-router.get('/', (req, res) => { // dessa forma é redundate
-  productControler.findAll(req, res);
-});
+router.get('/', productControler.findAll); // dessa forma é redundate
 
-router.get('/:id', (req, res) => {
-  productControler.findById(req, res);
-});
+router.get('/:id', productControler.findById);
+
+router.post('/', productControler.insertProduct);
 
 module.exports = router;
 // post = create
