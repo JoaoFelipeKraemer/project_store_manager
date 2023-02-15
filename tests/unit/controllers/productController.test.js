@@ -7,7 +7,7 @@ chai.use(sinonChai);
 const { productService } = require('../../../src/services');
 const { productControler } = require('../../../src/controllers');
 
-const { products } = require('./mocks/product.controller.mock');
+const { products, productOneMock } = require('./mocks/product.controller.mock');
 
 describe('Teste de unidade do productControler', function () {
   describe('Listando os produtos', function() {
@@ -30,7 +30,7 @@ describe('Teste de unidade do productControler', function () {
       expect(res.json).to.have.been.calledWith(products);
     });
   });
-it('Retorna de id invalido', async function () {
+it('Retorno de id invalido', async function () {
     const res = {};
     const req = {
       params: { id: 10 },
@@ -44,6 +44,22 @@ it('Retorna de id invalido', async function () {
 
     expect(res.status).to.have.been.calledWith(404);
      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+  });
+  
+  it('Retorno de id valido', async function () {
+    const res = {};
+    const req = {
+      params: { id: 1 },
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productService, 'findById').resolves( productOneMock );
+
+   const result = await productControler.findById(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(result);
   });
 
   afterEach(function () {

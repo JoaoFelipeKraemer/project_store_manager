@@ -13,6 +13,12 @@ const products = [
   }
 ]
 
+const productOneMock = {
+  id: 1,
+  name: "Martelo de Thor"
+};
+
 module.exports = {
   products,
+  productOneMock,
 };

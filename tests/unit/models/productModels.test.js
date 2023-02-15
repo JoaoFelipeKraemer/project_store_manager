@@ -14,6 +14,13 @@ describe('Testes da camada model de produtos', function () {
   expect(result).to.be.deep.equal(products);
   });
 
+  it('Recuperando um produto a partir do id id', async function () { // Implementando um CRUD do zero - Parte 1 - Camada Model
+    sinon.stub(connection, 'execute').resolves([[products[0]]]);
+    const product = await productModel.findById(1);
+
+    expect(product).to.be.deep.equal(products[0]);
+  });
+
   afterEach(function () {
     sinon.restore();
   });
