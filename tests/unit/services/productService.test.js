@@ -11,12 +11,20 @@ describe('Teste camada service de products', function () {
       sinon.stub(productModel, 'findAll').resolves(products);
       
       // act
-      const result = await productService.findAll();
+      const  result  = await productService.findAll();
 
       // assert
       expect(result.type).to.be.equal(null);
       expect(result.message).to.deep.equal(products);
     });
+    it('retorna a lista de produtos por id', async function () {
+    sinon.stub(productModel, 'findById').resolves([products[1]]);
+
+    const result = await productService.findById(2);
+
+    expect(result.type).to.be.equal(null);
+    expect(result.message).to.deep.equal([products[1]]);
+  });
   });
   
    afterEach(function () {
