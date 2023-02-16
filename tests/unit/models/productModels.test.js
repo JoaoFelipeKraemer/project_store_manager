@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { productModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
-const { products } = require('./mocks/product.model.mock');
+const { products, newMock } = require('./mocks/product.model.mock');
 
 describe('Testes da camada model de produtos', function () {
   it('Recuperando a lista de produtos', async function () {
@@ -19,6 +19,12 @@ describe('Testes da camada model de produtos', function () {
     const product = await productModel.findById(1);
 
     expect(product).to.be.deep.equal(products[0]);
+  });
+   it('Inserir produto', async function () { // Implementando um CRUD do zero - Parte 1 - Camada Model
+    sinon.stub(connection, 'execute').resolves([{ insertId: 8 }]);
+    const product = await productModel.insertProduct(newMock);
+
+    expect(product).to.be.deep.equal(8);
   });
 
   afterEach(function () {
