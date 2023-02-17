@@ -14,10 +14,6 @@ const validateSale = (sale) => {
   return { type: null, message: '' };
 };
 
-// const validateQuantity = () => {
-
-// };
-
 module.exports = {
   validateSale,
   validateId,

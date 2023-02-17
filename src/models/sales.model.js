@@ -8,14 +8,15 @@ const insertSalesId = async () => { // INSERT INTO sales e sales_products, uma v
   return insertId;
 };
 const insertSale = async (id, productId, quantity) => {
-  const [result] = await conn.execute(`
+  const [{ insertId }] = await conn.execute(`
   INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)
   `, [id, productId, quantity]);
-  return camelize(result);
+  // console.log(insertId);
+  return camelize(insertId);
 };
 
 const findProductId = async (id) => {
-  const [result] = await conn.execute(`
+  const [[result]] = await conn.execute(`
   SELECT product_id FROM StoreManager.sales_products WHERE product_id = ?`, [id]);
   return result;
 };

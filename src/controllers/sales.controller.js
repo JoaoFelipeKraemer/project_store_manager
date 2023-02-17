@@ -15,11 +15,11 @@ const salesById = async (req, res) => {
 };
 const insertSale = async (req, res) => {
   const sale = req.body;
-  const response = await salesService.insertSale(sale);
-  if (response.type) {
-    return res.status(response.type).json({ message: response.message });
+  const { type, message } = await salesService.insertSale(sale);
+  if (type) {
+    return res.status(type).json({ message });
   }
-  return res.status(201).json(response.message);
+  return res.status(201).json(message);
 };
 
 module.exports = {

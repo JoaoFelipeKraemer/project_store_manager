@@ -14,6 +14,7 @@ return { type: null, message: result };
 };
 
 const haveProductId = async (sales) => {
+  // verifica se existe no banco de dados
   const mapear = sales.map((product) => salesModel.findProductId(product.productId));
   const productIdData = await Promise.all(mapear);
   const checkProductId = productIdData.some((value) => typeof value === 'object');
@@ -39,7 +40,7 @@ const insertSale = async (sales) => {
     id: insertId,
     itemsSold: promiseInsert,
   };
-  return obj;
+  return { type: null, message: obj };
 };
 
 module.exports = {
