@@ -17,8 +17,8 @@ const haveProductId = async (sales) => {
   // verifica se existe no banco de dados
   const mapear = sales.map((product) => salesModel.findProductId(product.productId));
   const productIdData = await Promise.all(mapear);
-  const checkProductId = productIdData.some((value) => typeof value === 'object');
-  if (checkProductId === false) return { type: 404, message: 'Product not found' };
+  const checkProductId = productIdData.some((value) => !value.length);
+  if (!checkProductId) return { type: 404, message: 'Product not found' };
 };
 
 const insertSale = async (sales) => {
