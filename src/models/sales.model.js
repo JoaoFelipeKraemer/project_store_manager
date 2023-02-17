@@ -3,21 +3,28 @@ const conn = require('./connection');
 
 const insertSalesId = async () => { // INSERT INTO sales e sales_products, uma venda de um ou mais produtos em 1 requisição, 
   const [{ insertId }] = await conn.execute(`
-  INSERT INTO StoreManager.sales (id, date) VALUES (default, default)
+  INSERT INTO StoreManager.sales (date) VALUES (default)
    `, []); 
   return insertId;
 };
 const insertSale = async (id, productId, quantity) => {
-  const [{ insertId }] = await conn.execute(`
+  const result = await conn.execute(`
   INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)
   `, [id, productId, quantity]);
   // console.log(insertId);
-  return camelize(insertId);
+  return camelize(result);
 };
 
 const findProductId = async (id) => {
-  const [[result]] = await conn.execute(`
+  const [{ result }] = await conn.execute(`
   SELECT product_id FROM StoreManager.sales_products WHERE product_id = ?`, [id]);
+  return result;
+};
+
+const findbyId = async (id) => {
+    const [result] = await conn.execute(
+        'SELECT * FROM StoreManager.sales WHERE id = ?', [id],
+    );
   return result;
 };
 
@@ -49,4 +56,5 @@ module.exports = {
   insertSale,
   allSales,
   salesById,
+  findbyId,
 };
