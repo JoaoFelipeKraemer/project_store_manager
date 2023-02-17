@@ -16,7 +16,7 @@ const insertSale = async (id, productId, quantity) => {
 
 const findProductId = async (id) => {
   const [result] = await conn.execute(`
-  SELECT product_id FROM StoreManager.sale_products WHERE product_id = ?`, [id]);
+  SELECT product_id FROM StoreManager.sales_products WHERE product_id = ?`, [id]);
   return result;
 };
 

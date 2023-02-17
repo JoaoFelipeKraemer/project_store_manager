@@ -13,26 +13,33 @@ const salesById = async (id) => {
 return { type: null, message: result };
 };
 
-const insertSale = async (products) => {
-  const errors = products.map((sale) => validateSale(sale));
+const haveProductId = async (sales) => {
+  const mapear = sales.map((product) => salesModel.findProductId(product.productId));
+  const productIdData = await Promise.all(mapear);
+  const checkProductId = productIdData.some((value) => typeof value === 'object');
+  if (checkProductId === false) return { type: 404, message: 'Product not found' };
+};
+
+const insertSale = async (sales) => {
+  const errors = sales.map((product) => validateSale(product));
   const Error = errors.find((error) => error.type);
   if (Error) {
-    return Error;
+    if (Error.message.includes('than')) {
+      return { type: 422, message: Error.message };
+    }      
+  return { type: 400, message: Error.message };
   }
-  const mapear = products.map((product) => salesModel.findProductId(product.productId));
-  const productIdData = await Promise.all(mapear);
-  const checkProductId = productIdData.some(
-    (value) => typeof value === 'object',
-  );
-  
-  if (checkProductId === false) return 'Product not found';
-  // banco de dados product_id tem q ser aqui
-  const [insertId] = await salesModel.insertSalesId;
+  if (await haveProductId(sales)) return { type: 404, message: 'Product not found' };
 
-  const promiseInsert = products.map((e) => salesModel
+  const { insertId } = await salesModel.insertSalesId;
+  const result = sales.map((e) => salesModel
     .insertSale(insertId, e.productId, e.quantity));
-  const result = await Promise.all(promiseInsert);
-  return result;
+  const promiseInsert = await Promise.all(result);
+  const obj = {
+    id: insertId,
+    itemsSold: promiseInsert,
+  };
+  return obj;
 };
 
 module.exports = {
