@@ -5,18 +5,17 @@ const insertSalesId = async () => { // INSERT INTO sales e sales_products, uma v
   const [{ insertId }] = await conn.execute(`
   INSERT INTO StoreManager.sales (date) VALUES (default)
    `, []); 
-  return insertId;
+  return { insertId };
 };
-const insertSale = async (id, productId, quantity) => {
-  const result = await conn.execute(`
+const insertSale = async (saleId, { productId, quantity }) => {
+   await conn.execute(`
   INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)
-  `, [id, productId, quantity]);
-  // console.log(insertId);
-  return camelize(result);
+  `, [saleId, productId, quantity]);
+ return { productId, quantity };
 };
 
 const findProductId = async (id) => {
-  const [{ result }] = await conn.execute(`
+  const [result] = await conn.execute(`
   SELECT product_id FROM StoreManager.sales_products WHERE product_id = ?`, [id]);
   return result;
 };
