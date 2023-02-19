@@ -12,10 +12,10 @@ const salesById = async (id) => {
 
 return { type: null, message: result };
 };
-
+// 6
 const haveProductId = async (sales) => {
   // verifica se existe no banco de dados
-  const mapear = sales.map(({ productId }) => salesModel.findbyId(productId));
+  const mapear = sales.map((product) => salesModel.findProductId(product.productId));
  
   const productIdData = await Promise.all(mapear);
 
@@ -32,17 +32,28 @@ const insertSale = async (sales) => {
   return { type: 400, message: Error.message };
   }
   if (await haveProductId(sales)) return { type: 404, message: 'Product not found' };
-  const { insertId } = await salesModel.insertSalesId();
-  const insertSales = await Promise.all(sales.map((sale) => salesModel.insertSale(insertId, sale)));
-  const result = {
+   const insertId = await salesModel.insertSalesId();
+
+  const result = sales.map((e) => salesModel.insertSale(insertId, e));
+  const promiseInsert = await Promise.all(result);
+
+  const response = {
     id: insertId,
-    itemsSold: insertSales,
+    itemsSold: promiseInsert,
   };
-  return { type: null, message: result };
+return { type: null, message: response };
+};
+// 14
+const deleteById = async (id) => { 
+  const product = await salesModel.findProductId(id);
+  if (!product.length) return { type: 404, message: 'Sale not found' };
+  await salesModel.deleteById(id);
+  return { type: null, message: '' };
 };
 
 module.exports = {
   allSales,
   salesById,
   insertSale,
+  deleteById,
 };
