@@ -4,6 +4,8 @@ const validateName = require('../middlewares/validateName');
 
 const router = express.Router();
 
+router.get('/search', productControler.productName);
+
 router.get('/', productControler.findAll); // dessa forma é redundate
 
 router.get('/:id', productControler.findById);
