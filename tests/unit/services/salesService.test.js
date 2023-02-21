@@ -26,6 +26,21 @@ describe('Teste camada service de sales', function () {
     
     expect(result.message).to.deep.equal(result.message);
   });
+  it('é possível deletar algo do banco de dados', async function () {
+    sinon.stub(salesModel, 'salesById').resolves(everySaleMock[0]);
+    sinon.stub(salesModel, 'deleteById').resolves(undefined)
+
+    const result = await salesService.deleteById(1);
+   
+    expect(result).to.deep.equal({ type: null, message: '' });
+  });
+  it('n é possível deletar algo que não existe', async function () {
+      sinon.stub(salesModel, 'salesById').resolves([]);
+
+    const result = await salesService.deleteById(111);
+   
+    expect(result).to.be.deep.equal({ type: 404, message: 'Sale not found' });
+  });
   });  
    afterEach(function () {
      sinon.restore();

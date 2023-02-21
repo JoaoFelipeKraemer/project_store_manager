@@ -22,6 +22,14 @@ describe('Testes da camada model de sales', function () {
     expect(product).to.be.deep.equal(salebyidMock);
     
   });
+   it('Se deleta do banco de dados', async function () { // Implementando um CRUD do zero - Parte 1 - Camada Model
+    sinon.stub(connection, 'execute').resolves(undefined);
+    // console.log([[everySaleMock]])
+    const product = await salesModel.deleteById(1);
+
+    expect(product).to.be.deep.equal(undefined);
+    
+  });
 
   afterEach(function () {
     sinon.restore();

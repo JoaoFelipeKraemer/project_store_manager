@@ -61,6 +61,21 @@ it('Retorno de id invalido', async function () {
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(result);
   });
+  it('Deleta um produto por id', async function () {
+    const res = {};
+    const req = {
+      params: { id: 1 },
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'deleteById').resolves({type: null, message: ''});
+
+    await salesControler.deleteById(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+    expect(res.json).to.have.been.calledWith();
+  });
 
   afterEach(function () {
     sinon.restore();
