@@ -49,9 +49,16 @@ const deleteById = async (id) => {
   );
 };
 
+const findIdUpdate = async (id) => {
+  const result = await conn.execute(`
+  SELECT * FROM StoreManager.sales_products WHERE sale_id = ?`, [id]);
+  return result;
+};
+
 module.exports = {
   insertSalesId,
   findProductId,
+  findIdUpdate,
   insertSale,
   allSales,
   salesById,
