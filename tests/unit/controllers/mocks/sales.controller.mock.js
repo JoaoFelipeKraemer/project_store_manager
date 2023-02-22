@@ -26,7 +26,22 @@ const productOneMock = [
   }
 ]
 
+const returnMock = {
+  "id": 5,
+  "itemsSold": [
+    {
+      "productId": 1,
+      "quantity": 1
+    },
+    {
+      "productId": 2,
+      "quantity": 5
+    }
+  ]
+}
+
 module.exports = {
   everySaleMock,
   productOneMock,
+  returnMock,
 };

@@ -26,7 +26,72 @@ const salebyidMock = [
   }
 ]
 
+ const response = {
+  "id": 22,
+  "itemsSold": [
+    {
+      "productId": 2,
+      "quantity": 3
+    },
+    {
+      "productId": 3,
+      "quantity": 7
+    }
+  ]
+}
+
+
+const correctMock =[
+  {
+    "productId": 2,
+    "quantity": 3
+  },
+  {
+    "productId": 3,
+    "quantity": 7
+  }
+]
+
+const invalidProductId =[
+  {
+    "productId": 999,
+    "quantity": 1
+  },
+  {
+    "productId": 2,
+    "quantity": 5
+  }
+]
+
+const quantityZero =[
+  {
+    "productId": 1,
+    "quantity": 0
+  },
+  {
+    "productId": 2,
+    "quantity": 5
+  }
+]
+
+const quantityEmpty =[
+  {
+    "productId": 1,
+    "quantity": ''
+  },
+  {
+    "productId": 2,
+    "quantity": 5
+  }
+]
+
 module.exports = {
   everySaleMock,
   salebyidMock,
+  correctMock,
+  quantityEmpty,
+  quantityZero,
+  invalidProductId,
+  response,
+
 };

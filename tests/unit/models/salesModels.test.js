@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { salesModel } = require('../../../src/models');
 const connection = require('../../../src/models/connection');
-const { everySaleMock, salebyidMock } = require('./mocks/sales.model.mock');
+const { everySaleMock, salebyidMock, sucessMock, one } = require('./mocks/sales.model.mock');
 
 describe('Testes da camada model de sales', function () {
   it(' listar todas as vendas', async function () {
@@ -22,6 +22,23 @@ describe('Testes da camada model de sales', function () {
     expect(product).to.be.deep.equal(salebyidMock);
     
   });
+    it('Testa o id da venda', async function () { // Implementando um CRUD do zero - Parte 1 - Camada Model
+    sinon.stub(connection, 'execute').resolves([{ insertId:1 }]);
+    // console.log([[everySaleMock]])
+    const sale = await salesModel.insertSalesId();
+
+    expect(sale).to.be.deep.equal(1);
+    });
+  
+  it('Se adiciona no banco de dados', async function () { // Implementando um CRUD do zero - Parte 1 - Camada Model
+    sinon.stub(connection, 'execute').resolves({productId: 1, quantity: 5});
+    // console.log([[everySaleMock]])
+    const sale = await salesModel.insertSale(1, one);
+
+    expect(sale).to.be.deep.equal({productId: 1, quantity: 5});
+    
+  });
+
    it('Se deleta do banco de dados', async function () { // Implementando um CRUD do zero - Parte 1 - Camada Model
     sinon.stub(connection, 'execute').resolves(undefined);
     // console.log([[everySaleMock]])
