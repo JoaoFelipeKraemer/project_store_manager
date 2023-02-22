@@ -7,7 +7,7 @@ chai.use(sinonChai);
 const { salesService } = require('../../../src/services');
 const { salesControler } = require('../../../src/controllers');
 
-const { everySaleMock, productOneMock } = require('./mocks/sales.controller.mock');
+const { everySaleMock, productOneMock, correctMock, invalidProductId, response } = require('./mocks/sales.controller.mock');
 
 describe('Teste de unidade do salesControler', function () {
   describe('Listando as sales', function() {
@@ -76,6 +76,38 @@ it('Retorno de id invalido', async function () {
     expect(res.status).to.have.been.calledWith(204);
     expect(res.json).to.have.been.calledWith();
   });
+
+   it('Testa retorno da mensagem de erro', async function () {
+    const res = {};
+     const req = {
+       body: invalidProductId,
+     };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'insertSale').resolves({ type: 404, message: 'Product not found' });
+
+    await salesControler.insertSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({message: 'Product not found'});
+   });
+  
+  //  it('Testa caso de sucesso da insertSale', async function () {
+  //   const res = {};
+  //    const req = {
+  //      body: correctMock,
+  //    };
+
+  //   res.status = sinon.stub().returns(res);
+  //   res.json = sinon.stub().returns();
+  //   sinon.stub(salesService, 'insertSale').resolves({ type: 201, message: response });
+
+  //     await salesControler.insertSale(req, res);
+
+  //   expect(res.status).to.have.been.calledWith(201);
+  //   expect(res.json).to.have.been.calledWith({response});
+  // });
 
   afterEach(function () {
     sinon.restore();

@@ -40,8 +40,46 @@ const returnMock = {
   ]
 }
 
+const correctMock =[
+  {
+    "productId": 2,
+    "quantity": 3
+  },
+  {
+    "productId": 3,
+    "quantity": 7
+  }
+]
+
+const invalidProductId =[
+  {
+    "productId": 999,
+    "quantity": 1
+  },
+  {
+    "productId": 2,
+    "quantity": 5
+  }
+]
+
+ const response = {
+  "id": undefined,
+  "itemsSold": [
+    {
+      "productId": 2,
+      "quantity": 3
+    },
+    {
+      "productId": 3,
+      "quantity": 7
+    }
+  ]
+}
 module.exports = {
   everySaleMock,
   productOneMock,
   returnMock,
+  correctMock,
+  invalidProductId,
+  response,
 };
