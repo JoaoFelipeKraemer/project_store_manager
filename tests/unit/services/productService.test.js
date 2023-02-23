@@ -37,13 +37,30 @@ describe('Teste camada service de products', function () {
     expect(result.message).to.deep.equal(result.productByID);
     
    });
-    it('retorna a lista de produtos por id', async function () {
+    it('Retorna erro caso o ID do produto não exista', async function () {
+      sinon.stub(productModel, 'findById').resolves(undefined);
 
+      const result = await productService.findById(999);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('Product not found');
+      });
+
+      it('É possível deletar um produto que esteja cadastrado no banco de dados', async function () {
+      sinon.stub(productModel, 'findById').resolves([products[0]]);
+      sinon.stub(productModel, 'deleteById').resolves(undefined);
+
+      const result = await productService.deleteById(1);
+
+      expect(result).to.deep.equal({ type: null, message: '' });
+      });
+
+    it('Retorna mensagem de erro ao tentar deletar uma venda inexistente no banco de dados', async function () {
+
+      const result = await productService.deleteById(999);
+
+      expect(result).to.be.deep.equal({ type: 404, message: 'Product not found' });
     });
-    
-    it('retorna a lista de produtos por id', async function () {
-   
-  });
   })
   
    afterEach(function () {

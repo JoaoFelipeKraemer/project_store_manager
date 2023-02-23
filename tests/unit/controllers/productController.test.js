@@ -62,6 +62,36 @@ it('Retorno de id invalido', async function () {
     expect(res.json).to.have.been.calledWith(result);
   });
 
+  it('Deleta um produto com sucesso pelo id', async function () {
+    const req = { params: { id: 1} };
+    const res = {};
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productService, 'deleteById').resolves({ type: null, message: '' });
+
+    await productControler.deleteById(req, res);
+
+       expect(res.status).to.have.been.calledWith(204);
+       expect(res.json).to.have.been.calledWith();
+   });
+
+    it('Retorna erro ao deletar produtos que não estão cadastrados no banco de dados', async function () {
+    const req = { params: { id: 5 } };
+    const res = {};
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productService, 'deleteById').resolves({ type: 404, message: 'Product not found' });
+
+    await productControler.deleteById(req, res);
+
+       expect(res.status).to.have.been.calledWith(404);
+       expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
+   });
+
   afterEach(function () {
     sinon.restore();
   });
